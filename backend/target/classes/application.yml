@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/citize_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/citizen?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:Prasanna@7142}
+    password: ${DB_PASSWORD:Chaitanya@2006}
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
@@ -20,8 +20,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:your-email@gmail.com}
-    password: ${MAIL_PASSWORD:your-app-password}
+    username: "${MAIL_USERNAME:kakichaitanya2007@gmail.com}"
+    password: "${MAIL_PASSWORD:rfir vyfz jvvt oaca}"
     properties:
       mail:
         smtp:

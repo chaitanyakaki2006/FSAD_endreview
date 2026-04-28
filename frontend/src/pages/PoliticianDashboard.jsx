@@ -153,9 +153,9 @@ function PoliticianDashboard() {
                             <div className="loading-container">
                                 <div className="spinner"></div>
                             </div>
-                        ) : issues.length > 0 ? (
+                        ) : assignedIssues.length > 0 ? (
                             <div>
-                                {issues.slice(0, 5).map((issue) => (
+                                {assignedIssues.slice(0, 5).map((issue) => (
                                     <Link to={`/issues/${issue.id}`} key={issue.id} className="issue-card">
                                         <div className="issue-header">
                                             <div>
@@ -224,9 +224,9 @@ function PoliticianDashboard() {
                             </h2>
                         </div>
 
-                        {updates && updates.length > 0 ? (
+                        {myUpdates && myUpdates.length > 0 ? (
                             <div>
-                                {updates.slice(0, 3).map((update) => (
+                                {myUpdates.slice(0, 3).map((update) => (
                                     <div key={update.id} className="update-item">
                                         <h4 className="update-title">{update.title}</h4>
                                         <p className="update-meta">
