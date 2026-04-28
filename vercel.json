@@ -7,10 +7,5 @@
       "config": { "distDir": "dist" }
     }
   ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://REPLACE_WITH_BACKEND_URL/api/$1"
-    }
-  ]
+  
 }
