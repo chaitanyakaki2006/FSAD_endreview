@@ -5,7 +5,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:jdbc:mysql://localhost:3306/citizen?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:Chaitanya@2006}
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
   
   jpa:
@@ -21,7 +21,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: "${MAIL_USERNAME:kakichaitanya2007@gmail.com}"
-    password: "${MAIL_PASSWORD:rfir vyfz jvvt oaca}"
+    password: "${MAIL_PASSWORD:}"
     properties:
       mail:
         smtp:
