@@ -122,6 +122,7 @@ export const feedbackAPI = {
     submit: (feedbackData) => api.post('/feedback', feedbackData),
     getByPolitician: (politicianId) => api.get(`/feedback/politician/${politicianId}`),
     getPoliticianStats: (politicianId) => api.get(`/feedback/politician/${politicianId}/stats`),
+    getAverageRating: (politicianId) => api.get(`/feedback/politician/${politicianId}/average`),
     getMyFeedback: () => api.get('/feedback/my-feedback'),
     getReceived: () => api.get('/feedback/received'),
     delete: (id) => api.delete(`/feedback/${id}`),

@@ -45,7 +45,7 @@ function Feedback() {
             const res = await feedbackAPI.submit({
                 politicianId: parseInt(selectedPolitician),
                 rating,
-                comment,
+                text: comment,
                 category
             });
             setMyFeedback([res.data.data, ...myFeedback]);
