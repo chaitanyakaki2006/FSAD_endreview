@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { register, registerAdmin, registerModerator, registerPolitician, clearError } from '../store/slices/authSlice';
+import { register, registerPolitician, clearError } from '../store/slices/authSlice';
 import { toast } from 'react-toastify';
 import {
     FiUser,
@@ -9,7 +9,8 @@ import {
     FiLock,
     FiPhone,
     FiMapPin,
-    FiUserPlus
+    FiUserPlus,
+    FiBriefcase
 } from 'react-icons/fi';
 
 function Register() {
@@ -49,26 +50,22 @@ function Register() {
             return;
         }
 
+        if (formData.role === 'POLITICIAN' && !formData.constituency.trim()) {
+            toast.error('Constituency is required for politician registration');
+            return;
+        }
+
         const payload = {
             fullName: formData.fullName,
             email: formData.email,
             password: formData.password,
             phone: formData.phone,
-            constituency: formData.constituency,
-            role: formData.role
+            constituency: formData.constituency
         };
-
-        const thunkMap = {
-            CITIZEN: register,
-            POLITICIAN: registerPolitician,
-            ADMIN: registerAdmin,
-            MODERATOR: registerModerator,
-        };
-
-        const thunk = thunkMap[formData.role] || register;
 
         try {
-            await dispatch(thunk(payload)).unwrap();
+            const action = formData.role === 'POLITICIAN' ? registerPolitician : register;
+            await dispatch(action(payload)).unwrap();
             toast.success('Registration successful! Please login.');
             navigate('/login');
         } catch (err) {
@@ -81,11 +78,36 @@ function Register() {
             <div className="card">
 
                 <div className="text-center mb-lg">
+                    <div style={{
+                        width: '64px', height: '64px',
+                        background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
+                        borderRadius: '1rem',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '1.75rem', margin: '0 auto 1rem',
+                        boxShadow: '0 8px 20px rgba(99,102,241,0.35)'
+                    }}>🏛️</div>
                     <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Create Account</h1>
-                    <p className="text-muted">Join CitizenConnect</p>
+                    <p className="text-muted">Join CitizenConnect as a citizen or politician</p>
                 </div>
 
                 <form onSubmit={handleSubmit}>
+
+                    <div className="form-group">
+                        <label className="form-label">
+                            <FiBriefcase style={{ marginRight: '0.5rem' }} />
+                            Register As
+                        </label>
+                        <select
+                            name="role"
+                            className="form-input"
+                            value={formData.role}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="CITIZEN">Citizen</option>
+                            <option value="POLITICIAN">Politician</option>
+                        </select>
+                    </div>
 
                     <div className="form-group">
                         <label className="form-label">
@@ -174,6 +196,9 @@ function Register() {
                         <label className="form-label">
                             <FiMapPin style={{ marginRight: '0.5rem' }} />
                             Constituency
+                            {formData.role === 'POLITICIAN' && (
+                                <span style={{ color: 'var(--accent-rose)', fontSize: '0.75rem' }}> *required</span>
+                            )}
                         </label>
                         <input
                             type="text"
@@ -182,28 +207,8 @@ function Register() {
                             placeholder="Enter constituency"
                             value={formData.constituency}
                             onChange={handleChange}
+                            required={formData.role === 'POLITICIAN'}
                         />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label">
-                            Select Role
-                        </label>
-                        <select
-                            name="role"
-                            className="form-input"
-                            value={formData.role}
-                            onChange={handleChange}
-                            style = {{
-                                backgroundColor: '#1e1e2f',
-                                color: 'white'
-                            }}
-                        >
-                            <option value="CITIZEN">Citizen</option>
-                            <option value="POLITICIAN">Politician</option>
-                            <option value="ADMIN">Admin</option>
-                            <option value="MODERATOR">Moderator</option>
-                        </select>
                     </div>
 
                     {error && <p className="form-error mb-md">{error}</p>}

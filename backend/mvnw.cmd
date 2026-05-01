@@ -6,9 +6,12 @@
 @echo off
 setlocal
 
-set MAVEN_VERSION=3.9.13
-set MAVEN_URL=https://dlcdn.apache.org/maven/maven-3/%MAVEN_VERSION%/binaries/apache-maven-%MAVEN_VERSION%-bin.zip
+set MAVEN_VERSION=3.9.15
+set MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/%MAVEN_VERSION%/binaries/apache-maven-%MAVEN_VERSION%-bin.zip
 set MAVEN_HOME=%USERPROFILE%\.m2\wrapper\apache-maven-%MAVEN_VERSION%
+
+where mvn.cmd >nul 2>nul
+if %ERRORLEVEL%==0 goto runSystemMaven
 
 if exist "%MAVEN_HOME%\bin\mvn.cmd" goto runMaven
 
@@ -21,3 +24,8 @@ del "%TEMP%\maven.zip" 2>nul
 
 :runMaven
 "%MAVEN_HOME%\bin\mvn.cmd" %*
+exit /b %ERRORLEVEL%
+
+:runSystemMaven
+mvn.cmd %*
+exit /b %ERRORLEVEL%

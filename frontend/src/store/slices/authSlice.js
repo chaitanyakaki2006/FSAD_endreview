@@ -1,6 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authAPI } from '../../api/api';
 
+const getErrorMessage = (error, fallback) => {
+    if (error.response?.data?.message) {
+        return error.response.data.message;
+    }
+
+    if (error.response?.data?.data) {
+        return Object.values(error.response.data.data).join(', ');
+    }
+
+    if (error.request) {
+        return 'Cannot reach the server. Please check that the backend is running and CORS is configured.';
+    }
+
+    return fallback;
+};
+
 // Async thunks
 export const login = createAsyncThunk(
     'auth/login',
@@ -12,7 +28,7 @@ export const login = createAsyncThunk(
             localStorage.setItem('user', JSON.stringify(user));
             return { token, user };
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Login failed');
+            return rejectWithValue(getErrorMessage(error, 'Login failed'));
         }
     }
 );
@@ -24,7 +40,7 @@ export const register = createAsyncThunk(
             const response = await authAPI.register(userData);
             return response.data.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Registration failed');
+            return rejectWithValue(getErrorMessage(error, 'Registration failed'));
         }
     }
 );
@@ -36,7 +52,7 @@ export const registerAdmin = createAsyncThunk(
             const response = await authAPI.registerAdmin(userData);
             return response.data.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Admin registration failed');
+            return rejectWithValue(getErrorMessage(error, 'Admin registration failed'));
         }
     }
 );
@@ -48,7 +64,7 @@ export const registerModerator = createAsyncThunk(
             const response = await authAPI.registerModerator(userData);
             return response.data.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Moderator registration failed');
+            return rejectWithValue(getErrorMessage(error, 'Moderator registration failed'));
         }
     }
 );
@@ -60,7 +76,7 @@ export const registerPolitician = createAsyncThunk(
             const response = await authAPI.registerPolitician(userData);
             return response.data.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Politician registration failed');
+            return rejectWithValue(getErrorMessage(error, 'Politician registration failed'));
         }
     }
 );
@@ -72,7 +88,7 @@ export const fetchCurrentUser = createAsyncThunk(
             const response = await authAPI.getCurrentUser();
             return response.data.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to fetch user');
+            return rejectWithValue(getErrorMessage(error, 'Failed to fetch user'));
         }
     }
 );
